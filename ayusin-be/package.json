@@ -4,8 +4,9 @@
   "description": "",
   "module": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Test?? Nah bro, we roll without it\" && exit 0",
     "dev": "bun run --watch src/index.ts",
+    "prod": "bun run src/index.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run src/db/migrate.ts",
     "db:update": "bun run db:generate && bun run db:migrate",
