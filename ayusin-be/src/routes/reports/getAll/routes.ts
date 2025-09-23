@@ -14,9 +14,31 @@ const ErrorResponseSchema = z.object({
 	description: z.string(),
 });
 
+const RequestQueryParamsSchema = z.object({
+	duration: z.number().describe("Filters in the last n days"),
+	// TODO: Enum ? id based?
+	department: z
+		.string()
+		.describe("Filters reports depending on which department it is assigned"),
+	label: z.string().describe("Filter by label"),
+	// TODO: Again, enums? Also, since it can be used multiple times what schema type should it use?
+	// z.array(z.string)?
+	categories: z.string().describe("Filter by category"),
+	// TODO: enums?
+	sort_by: z.string().describe("Sort by a variable"),
+	location: z
+		.string()
+		.describe("Location coordinate (longitude:x, latitude:y)"),
+	// TODO: add refinement to require location when radius is given.
+	radius: z.number().describe("How many meters from location"),
+});
+
 export const getAllReportsRoute = createRoute({
 	description: "Get all reports",
 	path: "/",
+	request: {
+		query: RequestQueryParamsSchema,
+	},
 	method: "get",
 	tags: ["Reports"],
 	responses: {
