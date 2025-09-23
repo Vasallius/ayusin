@@ -5,48 +5,48 @@ import { z } from "zod";
 
 // TODO: Use proper float32/64 depending on db
 const Location = z.object({
-  x: z.number(),
-  y: z.number(),
+	x: z.number(),
+	y: z.number(),
 });
 
 const SuccessResponseSchema = z.object({
-  status: z.literal("success"),
-  id: z.string(),
-  title: z.string(),
-  description: z.string(),
-  // TODO: Ideally this is an enum.
-  category: z.string(),
-  labels: z.array(z.string()),
-  media_links: z.array(z.string()),
-  // TODO: Handle defaults db-wise
-  upvotes: z.number().min(0),
-  location: Location,
+	status: z.literal("success"),
+	id: z.string(),
+	title: z.string(),
+	description: z.string(),
+	// TODO: Ideally this is an enum.
+	category: z.string(),
+	labels: z.array(z.string()),
+	media_links: z.array(z.string()),
+	// TODO: Handle defaults db-wise
+	upvotes: z.number().min(0),
+	location: Location,
 });
 
 const ErrorResponseSchema = z.object({
-  status: z.literal("error"),
-  description: z.string(),
+	status: z.literal("error"),
+	description: z.string(),
 });
 
 export const create = createRoute({
-  description: "Create a new report",
-  path: "/reports",
-  method: "post",
-  tags: ["Reports"],
-  responses: {
-    [HttpStatusCodes.OK]: jsonContent(
-      SuccessResponseSchema,
-      "Successfully created a new report",
-    ),
-    [HttpStatusCodes.UNAUTHORIZED]: jsonContent(
-      ErrorResponseSchema,
-      "Unauthorized request",
-    ),
-    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      ErrorResponseSchema,
-      "Unauthorized request",
-    ),
-  },
+	description: "Create a new report",
+	path: "/reports",
+	method: "post",
+	tags: ["Reports"],
+	responses: {
+		[HttpStatusCodes.OK]: jsonContent(
+			SuccessResponseSchema,
+			"Successfully created a new report",
+		),
+		[HttpStatusCodes.UNAUTHORIZED]: jsonContent(
+			ErrorResponseSchema,
+			"Unauthorized request",
+		),
+		[HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
+			ErrorResponseSchema,
+			"Unauthorized request",
+		),
+	},
 });
 
 export type CreateRoute = typeof create;
