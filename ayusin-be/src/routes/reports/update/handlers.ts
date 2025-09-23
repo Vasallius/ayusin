@@ -1,6 +1,6 @@
-import type { AppRouteHandler } from "@/lib/types";
 import * as HttpStatusCodes from "stoker/http-status-codes";
-import { UpdateReportRoute } from "./routes";
+import type { AppRouteHandler } from "@/lib/types";
+import type { UpdateReportRoute } from "./routes";
 
 export const updateReportHandler: AppRouteHandler<UpdateReportRoute> = async (
 	c,
