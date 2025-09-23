@@ -6,7 +6,7 @@ export const reportSchema = new mongoose.Schema(
 		version: { type: Number, required: true },
 		title: { type: String, required: true },
 		description: { type: String, required: false },
-		labels: { type: [String], required: false },
+		labels: { type: [String], required: true },
 		location: {
 			type: pointSchema,
 			required: true,
@@ -19,26 +19,29 @@ export const reportSchema = new mongoose.Schema(
 		],
 		upvotes: { type: Number, required: true, default: 0 },
 		metadata: {
-			mediaLinks: { type: [String], required: true },
-			scope: {
-				type: String,
-				enum: ["Barangay", "City", "Province", "Regional", "National"],
-				required: true,
-			},
-			categories: { type: [String], required: true },
-			dateClosed: { type: mongoose.Schema.Types.Date, required: false },
-			assignedDepartmentIDs: [
-				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: "Department",
+			type: new mongoose.Schema({
+				mediaLinks: { type: [String], required: true },
+				scope: {
+					type: String,
+					enum: ["Barangay", "City", "Province", "Regional", "National"],
+					required: true,
 				},
-			],
-			assignedPersonnelIDs: [
-				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: "User",
-				},
-			],
+				category: { type: String, required: true },
+				dateClosed: { type: mongoose.Schema.Types.Date, required: false },
+				assignedDepartmentIDs: [
+					{
+						type: mongoose.Schema.Types.ObjectId,
+						ref: "Department",
+					},
+				],
+				assignedPersonnelIDs: [
+					{
+						type: mongoose.Schema.Types.ObjectId,
+						ref: "User",
+					},
+				],
+			}),
+			required: true,
 		},
 	},
 	{ timestamps: true },
