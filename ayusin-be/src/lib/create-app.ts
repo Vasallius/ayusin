@@ -5,12 +5,22 @@ import { defaultHook } from "stoker/openapi";
 import { pinoLogger } from "@/middleware/pino-logger";
 
 import type { AppBindings, AppOpenAPI } from "./types";
+import { clerkAuth } from "@/middleware/clerk-auth";
 
 export function createRouter() {
 	return new OpenAPIHono<AppBindings>({
 		strict: false,
 		defaultHook,
 	});
+}
+
+export function createClerkRouter() {
+	const app = new OpenAPIHono<AppBindings>({
+		strict: false,
+		defaultHook,
+	});
+    app.use("*", clerkAuth());
+    return app;
 }
 
 export default function createApp() {
