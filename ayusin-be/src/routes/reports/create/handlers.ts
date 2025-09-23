@@ -1,8 +1,10 @@
 import type { AppRouteHandler } from "@/lib/types";
 import * as HttpStatusCodes from "stoker/http-status-codes";
-import type { CreateRoute } from "./routes";
+import type { CreateReportRoute } from "./routes";
 
-export const create: AppRouteHandler<CreateRoute> = async (c) => {
+export const createReportHandler: AppRouteHandler<CreateReportRoute> = async (
+	c,
+) => {
 	console.log(c.var.jwtPayload);
 	return c.json(
 		{

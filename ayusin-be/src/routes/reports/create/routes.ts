@@ -14,9 +14,9 @@ const ErrorResponseSchema = z.object({
 	description: z.string(),
 });
 
-export const create = createRoute({
+export const createReportRoute = createRoute({
 	description: "Create a new report",
-	path: "/reports",
+	path: "/",
 	method: "post",
 	tags: ["Reports"],
 	responses: {
@@ -35,4 +35,4 @@ export const create = createRoute({
 	},
 });
 
-export type CreateRoute = typeof create;
+export type CreateReportRoute = typeof createReportRoute;
