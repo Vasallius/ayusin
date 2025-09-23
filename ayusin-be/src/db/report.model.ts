@@ -11,10 +11,10 @@ export const reportSchema = new mongoose.Schema(
 			type: pointSchema,
 			required: true,
 		},
-		history: [
+		logs: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
-				ref: "ReportHistory",
+				ref: "ReportLog",
 			},
 		],
 		upvotes: { type: Number, required: true, default: 0 },
