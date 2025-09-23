@@ -11,7 +11,12 @@ export const reportSchema = new mongoose.Schema(
 			type: pointSchema,
 			required: true,
 		},
-		history: { type: [mongoose.Schema.Types.ObjectId], required: true },
+		history: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "ReportHistory",
+			},
+		],
 		upvotes: { type: Number, required: true, default: 0 },
 		metadata: {
 			mediaLinks: { type: [String], required: true },
@@ -22,14 +27,18 @@ export const reportSchema = new mongoose.Schema(
 			},
 			categories: { type: [String], required: true },
 			dateClosed: { type: mongoose.Schema.Types.Date, required: false },
-			assignedDepartmentIDs: {
-				type: [mongoose.Schema.Types.ObjectId],
-				required: true,
-			},
-			assignedPersonnelIDs: {
-				type: [mongoose.Schema.Types.ObjectId],
-				required: true,
-			},
+			assignedDepartmentIDs: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "Department",
+				},
+			],
+			assignedPersonnelIDs: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "User",
+				},
+			],
 		},
 	},
 	{ timestamps: true },

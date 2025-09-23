@@ -8,10 +8,12 @@ export const commentSchema = new mongoose.Schema(
 		userID: {
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
+			ref: "User",
 		},
 		reportID: {
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
+			ref: "Report",
 		},
 	},
 	{ timestamps: true },
