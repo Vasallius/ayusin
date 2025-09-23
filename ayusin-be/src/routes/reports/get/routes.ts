@@ -29,7 +29,7 @@ export const getReportRoute = createRoute({
 	responses: {
 		[HttpStatusCodes.OK]: jsonContent(
 			SuccessResponseSchema,
-			"Successfully created a new report",
+			"Successfully retrieved report by id",
 		),
 		[HttpStatusCodes.UNAUTHORIZED]: jsonContent(
 			ErrorResponseSchema,

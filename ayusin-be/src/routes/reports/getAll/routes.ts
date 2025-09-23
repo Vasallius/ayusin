@@ -22,7 +22,7 @@ export const getAllReportsRoute = createRoute({
 	responses: {
 		[HttpStatusCodes.OK]: jsonContent(
 			SuccessResponseSchema,
-			"Successfully created a new report",
+			"Sucessfully retrieved all reports",
 		),
 		[HttpStatusCodes.UNAUTHORIZED]: jsonContent(
 			ErrorResponseSchema,
