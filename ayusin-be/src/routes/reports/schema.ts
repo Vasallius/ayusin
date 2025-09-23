@@ -14,7 +14,6 @@ export const ReportSchema = z.object({
 	category: z.string(),
 	labels: z.array(z.string()),
 	media_links: z.array(z.string()),
-	// TODO: Handle defaults db-wise
-	upvotes: z.number().min(0),
+	upvotes: z.number(),
 	location: Location,
 });
