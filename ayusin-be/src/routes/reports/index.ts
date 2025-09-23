@@ -1,12 +1,12 @@
 import { createClerkRouter, createRouter } from "@/lib/create-app";
-import { createReportRoute } from "./create/routes";
 import { createReportHandler } from "./create/handlers";
-import { getAllReportsRoute } from "./getAll/routes";
-import { getAllReportsHandler } from "./getAll/handlers";
-import { getReportRoute } from "./get/routes";
+import { createReportRoute } from "./create/routes";
 import { getReportHandler } from "./get/handlers";
-import { updateReportRoute } from "./update/routes";
+import { getReportRoute } from "./get/routes";
+import { getAllReportsHandler } from "./getAll/handlers";
+import { getAllReportsRoute } from "./getAll/routes";
 import { updateReportHandler } from "./update/handlers";
+import { updateReportRoute } from "./update/routes";
 
 const router = createRouter()
 	.basePath("/reports")
