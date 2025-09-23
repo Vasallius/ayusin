@@ -1,5 +1,9 @@
 {
-	"organizeImports": {
-		"enabled": true
-	}
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
 }
