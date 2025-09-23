@@ -10,6 +10,7 @@ mkShell {
     extras.pkgs-unstable.bun # ^1.2.22, may change based on nixpkgs/unstable
     vtsls
     biome
+    mongosh
   ];
 
 }
