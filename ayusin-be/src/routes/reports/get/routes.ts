@@ -39,6 +39,10 @@ export const getReportRoute = createRoute({
 			ErrorResponseSchema,
 			"Report not found",
 		),
+		[HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
+			ErrorResponseSchema,
+			"Internal server error",
+		),
 	},
 });
 

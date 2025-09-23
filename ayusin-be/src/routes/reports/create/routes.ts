@@ -76,7 +76,7 @@ export const createReportRoute = createRoute({
 		),
 		[HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
 			ErrorResponseSchema,
-			"Server error",
+			"Internal server error",
 		),
 	},
 });
