@@ -4,6 +4,17 @@ import { jsonContent } from "stoker/openapi/helpers";
 import { z } from "zod";
 import { ReportSchema } from "../schema";
 
+const RequestSchema = z.object({
+	title: z.string(),
+	description: z.string().optional(),
+	category: z.string(),
+	scope: z.enum(["Barangay", "City", "Province", "Regional", "National"]),
+	location: z.object({
+		x: z.float64(),
+		y: z.float64(),
+	}),
+});
+
 const SuccessResponseSchema = z.object({
 	status: z.literal("success"),
 	...ReportSchema.shape,
@@ -41,6 +52,15 @@ export const createReportRoute = createRoute({
 	},
 	method: "post",
 	tags: ["Reports"],
+	request: {
+		body: {
+			content: {
+				"application/json": {
+					schema: RequestSchema,
+				},
+			},
+		},
+	},
 	responses: {
 		[HttpStatusCodes.OK]: jsonContent(
 			SuccessResponseSchema,
@@ -52,7 +72,11 @@ export const createReportRoute = createRoute({
 		),
 		[HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
 			ErrorResponseSchema,
-			"Unauthorized request",
+			"Bad request data",
+		),
+		[HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
+			ErrorResponseSchema,
+			"Server error",
 		),
 	},
 });

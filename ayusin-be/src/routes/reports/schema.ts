@@ -9,7 +9,7 @@ const Location = z.object({
 export const ReportSchema = z.object({
 	id: z.string(),
 	title: z.string(),
-	description: z.string(),
+	description: z.string().optional(),
 	// TODO: Ideally this is an enum.
 	category: z.string(),
 	labels: z.array(z.string()),
