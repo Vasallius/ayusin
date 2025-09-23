@@ -29,7 +29,7 @@ export const updateReportRoute = createRoute({
 	responses: {
 		[HttpStatusCodes.OK]: jsonContent(
 			SuccessResponseSchema,
-			"Succesfully updated report",
+			"Successfully updated report",
 		),
 		[HttpStatusCodes.UNAUTHORIZED]: jsonContent(
 			ErrorResponseSchema,
