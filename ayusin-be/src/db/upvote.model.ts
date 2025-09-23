@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 
 export const upvoteSchema = new mongoose.Schema(
 	{
-		version: { type: String, required: true },
+		version: { type: Number, required: true },
 		userID: {
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,

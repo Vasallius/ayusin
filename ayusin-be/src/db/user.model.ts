@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 
 export const userSchema = new mongoose.Schema(
 	{
-		version: { type: String, required: true },
+		version: { type: Number, required: true },
 		type: { type: String, enum: ["Citizen", "LGU"], required: true },
 		clerkID: { type: String, required: true },
 	},

@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 
 export const reportLogSchema = new mongoose.Schema(
 	{
-		version: { type: String, required: true },
+		version: { type: Number, required: true },
 		title: { type: String, required: true },
 		description: { type: String, required: false },
 		action: {

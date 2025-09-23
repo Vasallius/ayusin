@@ -3,7 +3,7 @@ import { pointSchema } from "./point.model";
 
 export const reportSchema = new mongoose.Schema(
 	{
-		version: { type: String, required: true },
+		version: { type: Number, required: true },
 		title: { type: String, required: true },
 		description: { type: String, required: false },
 		labels: { type: [String], required: false },
