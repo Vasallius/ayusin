@@ -27,6 +27,7 @@ export const getReportHandler: AppRouteHandler<GetReportRoute> = async (c) => {
 				description:
 					report.description === null ? undefined : report.description,
 				category: report.metadata.category,
+				scope: report.metadata.scope,
 				labels: report.labels,
 				media_links: report.metadata.mediaLinks,
 				upvotes: report.upvotes,

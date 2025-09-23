@@ -10,8 +10,8 @@ export const ReportSchema = z.object({
 	id: z.string(),
 	title: z.string(),
 	description: z.string().optional(),
-	// TODO: Ideally this is an enum.
 	category: z.string(),
+	scope: z.enum(["Barangay", "City", "Province", "Regional", "National"]),
 	labels: z.array(z.string()),
 	media_links: z.array(z.string()),
 	upvotes: z.number(),

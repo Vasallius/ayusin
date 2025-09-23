@@ -33,6 +33,7 @@ export const createReportHandler: AppRouteHandler<CreateReportRoute> = async (
 				description:
 					report.description === null ? undefined : report.description,
 				category: report.metadata.category,
+				scope: report.metadata.scope,
 				labels: report.labels,
 				media_links: report.metadata.mediaLinks,
 				upvotes: report.upvotes,
