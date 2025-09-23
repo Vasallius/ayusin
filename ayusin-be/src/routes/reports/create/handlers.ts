@@ -3,8 +3,12 @@ import { CreateRoute } from "./routes";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 
 export const create: AppRouteHandler<CreateRoute> = async (c) => {
-    console.log(c.var.jwtPayload);
-    return c.json({
-        message: "kek"
-    }, HttpStatusCodes.OK);
-}
+  console.log(c.var.jwtPayload);
+  return c.json(
+    {
+      status: "error",
+      description: "Unauthorized. Missing 'Authorization' Header.",
+    },
+    HttpStatusCodes.UNPROCESSABLE_ENTITY,
+  );
+};

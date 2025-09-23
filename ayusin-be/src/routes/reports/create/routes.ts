@@ -23,6 +23,11 @@ const SuccessResponseSchema = z.object({
   location: Location,
 });
 
+const ErrorResponseSchema = z.object({
+  status: z.literal("error"),
+  description: z.string(),
+});
+
 export const create = createRoute({
   description: "Create a new report",
   path: "/reports",
@@ -32,6 +37,14 @@ export const create = createRoute({
     [HttpStatusCodes.OK]: jsonContent(
       SuccessResponseSchema,
       "Successfully created a new report",
+    ),
+    [HttpStatusCodes.UNAUTHORIZED]: jsonContent(
+      ErrorResponseSchema,
+      "Unauthorized request",
+    ),
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
+      ErrorResponseSchema,
+      "Unauthorized request",
     ),
   },
 });
