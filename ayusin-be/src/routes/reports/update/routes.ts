@@ -18,12 +18,28 @@ const ParamsSchema = z.object({
 	id: z.string().describe("Report ID"),
 });
 
+const RequestBodySchema = ReportSchema.pick({
+	title: true,
+	description: true,
+	category: true,
+	scope: true,
+	labels: true,
+	location: true,
+}).partial();
+
 export const updateReportRoute = createRoute({
 	description: "Get all reports",
 	path: "/:id",
 	method: "patch",
 	request: {
 		params: ParamsSchema,
+		body: {
+			content: {
+				"application/json": {
+					schema: RequestBodySchema,
+				},
+			},
+		},
 	},
 	tags: ["Reports"],
 	responses: {
