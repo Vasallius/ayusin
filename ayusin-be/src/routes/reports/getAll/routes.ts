@@ -14,24 +14,59 @@ const ErrorResponseSchema = z.object({
 	description: z.string(),
 });
 
-const RequestQueryParamsSchema = z.object({
-	duration: z.number().describe("Filters in the last n days"),
-	// TODO: Enum ? id based?
-	department: z
-		.string()
-		.describe("Filters reports depending on which department it is assigned"),
-	label: z.string().describe("Filter by label"),
-	// TODO: Again, enums? Also, since it can be used multiple times what schema type should it use?
-	// z.array(z.string)?
-	categories: z.string().describe("Filter by category"),
-	// TODO: enums?
-	sort_by: z.string().describe("Sort by a variable"),
-	location: z
-		.string()
-		.describe("Location coordinate (longitude:x, latitude:y)"),
-	// TODO: add refinement to require location when radius is given.
-	radius: z.number().describe("How many meters from location"),
-});
+const positiveIntValidator = z
+	.string()
+	.optional()
+	.refine(
+		(s) => {
+			if (s === undefined) return true;
+			try {
+				const n = BigInt(s);
+				return n > BigInt(0);
+			} catch {
+				return false;
+			}
+		},
+		{ message: "query parameter must be a positive integer greater than 0" },
+	)
+	.transform((s) => (s === undefined ? undefined : Number(s)));
+
+const RequestQueryParamsSchema = z
+	.object({
+		duration: positiveIntValidator.describe("Filters in the last n days"),
+		// TODO: Enum ? id based?
+		department: z
+			.string()
+			.optional()
+			.describe("Filters reports depending on which department it is assigned"),
+		label: z.string().optional().describe("Filter by label"),
+		// TODO: Again, enums? Also, since it can be used multiple times what schema type should it use?
+		// z.array(z.string)?
+		categories: z.string().optional().describe("Filter by category"),
+		// TODO: enums?
+		sort_by: z
+			.enum(["created_at", "upvotes"])
+			.optional()
+			.transform((arg) => (arg === "created_at" ? "createdAt" : arg))
+			.describe("Sort by a variable"),
+		order_by: z
+			.enum(["asc", "desc"])
+			.default("asc")
+			.describe(
+				"What to order the sort in 'sort_by' by: ascending or descending",
+			),
+		location: z
+			.string()
+			.optional()
+			.describe("Location coordinate (longitude:x, latitude:y)"),
+		// TODO: add refinement to require location when radius is given.
+		radius: z.number().optional().describe("How many meters from location"),
+		limit: positiveIntValidator.describe("How many reports to return"),
+	})
+	.refine((data) => data.sort_by !== undefined || data.order_by === undefined, {
+		message: "'order_by' can only be set if 'sort_by' is provided",
+		path: ["order_by"],
+	});
 
 export const getAllReportsRoute = createRoute({
 	description: "Get all reports",
@@ -44,15 +79,15 @@ export const getAllReportsRoute = createRoute({
 	responses: {
 		[HttpStatusCodes.OK]: jsonContent(
 			SuccessResponseSchema,
-			"Sucessfully retrieved all reports",
+			"Successfully retrieved all reports",
 		),
 		[HttpStatusCodes.UNAUTHORIZED]: jsonContent(
 			ErrorResponseSchema,
 			"Unauthorized request",
 		),
-		[HttpStatusCodes.NOT_FOUND]: jsonContent(
+		[HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
 			ErrorResponseSchema,
-			"Report not found",
+			"Internal server error",
 		),
 	},
 });
