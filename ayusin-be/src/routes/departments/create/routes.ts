@@ -6,7 +6,7 @@ import * as model from "./model";
 const tags = ["department"];
 
 export const create = createRoute({
-    path: "/departments",
+    path: "/",
     method: "post",
     tags,
     request: {

@@ -1,8 +1,8 @@
 import { createClerkRouter } from "@/lib/create-app";
-import * as handlers from "./handlers";
-import * as routes from "./routes";
+import { create,createDepartment } from "./create/index";
 
-const router = createClerkRouter()
-    .openapi(routes.create, handlers.createDepartment);
+const routes = createClerkRouter()
+    .basePath("/departments")
+    .openapi(create, createDepartment);
 
-export default router;
+export default routes
