@@ -59,7 +59,7 @@ export const getAllReportsHandler: AppRouteHandler<GetAllReportsRoute> = async (
 		return c.json(
 			{
 				status: "error",
-				description: "Creating a report failed.",
+				description: "Fetching reports failed.",
 			},
 			HttpStatusCodes.INTERNAL_SERVER_ERROR,
 		);
