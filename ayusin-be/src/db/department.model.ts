@@ -9,13 +9,19 @@ export const departmentSchema = new mongoose.Schema(
 		contact: { type: String, required: false },
 		email: { type: String, required: false },
 		headquarterAddress: { type: String, required: false },
-		headquarterLocation: { type: pointSchema, required: false },
+		headquarterLocation: { type: pointSchema, required: true },
 		members: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
 				ref: "User",
 			},
 		],
+        roles: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Role"
+            }
+        ]
 	},
 	{ timestamps: true },
 );
