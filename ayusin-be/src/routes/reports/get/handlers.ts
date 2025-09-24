@@ -23,6 +23,8 @@ export const getReportHandler: AppRouteHandler<GetReportRoute> = async (c) => {
 			{
 				status: "success",
 				id: report._id.toString(),
+				created_at: report.createdAt,
+				updated_at: report.updatedAt,
 				title: report.title,
 				description:
 					report.description === null ? undefined : report.description,

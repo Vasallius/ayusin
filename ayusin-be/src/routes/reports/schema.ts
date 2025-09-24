@@ -8,6 +8,8 @@ const Location = z.object({
 
 export const ReportSchema = z.object({
 	id: z.string(),
+	created_at: z.date(),
+	updated_at: z.date(),
 	title: z.string(),
 	description: z.string().optional(),
 	category: z.string(),
