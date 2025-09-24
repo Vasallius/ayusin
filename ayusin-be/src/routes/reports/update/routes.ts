@@ -39,6 +39,10 @@ export const updateReportRoute = createRoute({
 			ErrorResponseSchema,
 			"Unprocessable Entity",
 		),
+		[HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
+			ErrorResponseSchema,
+			"Internal Server Error",
+		),
 	},
 });
 
