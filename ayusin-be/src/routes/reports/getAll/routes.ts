@@ -2,6 +2,7 @@ import { createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 import { jsonContent } from "stoker/openapi/helpers";
 import { z } from "zod";
+import { objectIdValidator } from "@/lib/utils";
 import { ReportSchema } from "../schema";
 
 const SuccessResponseSchema = z.object({
@@ -35,8 +36,7 @@ const RequestQueryParamsSchema = z
 	.object({
 		duration: positiveIntValidator.describe("Filters in the last n days"),
 		// TODO: Enum ? id based?
-		department: z
-			.string()
+		department: objectIdValidator
 			.optional()
 			.describe("Filters reports depending on which department it is assigned"),
 		label: z.string().optional().describe("Filter by label"),

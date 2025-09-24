@@ -1,3 +1,6 @@
+import mongoose from "mongoose";
+import z from "zod";
+
 export type ExtractBaseType<T, U> = Pick<T, keyof U>;
 
 export function isNullOrUndefined<T>(
@@ -5,3 +8,12 @@ export function isNullOrUndefined<T>(
 ): value is null | undefined {
 	return value === null || typeof value === "undefined";
 }
+
+/**
+ * Validates that a string is a valid MongoDB ObjectId.
+ */
+export const objectIdValidator = z
+	.string()
+	.refine((val) => mongoose.Types.ObjectId.isValid(val), {
+		message: "Invalid MongoDB ObjectId",
+	});

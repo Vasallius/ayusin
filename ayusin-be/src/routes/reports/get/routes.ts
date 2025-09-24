@@ -2,6 +2,7 @@ import { createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 import { jsonContent } from "stoker/openapi/helpers";
 import { z } from "zod";
+import { objectIdValidator } from "@/lib/utils";
 import { ReportSchema } from "../schema";
 
 const SuccessResponseSchema = z.object({
@@ -15,7 +16,7 @@ const ErrorResponseSchema = z.object({
 });
 
 const ParamsSchema = z.object({
-	id: z.string().describe("Report ID"),
+	id: objectIdValidator.describe("Report ID"),
 });
 
 export const getReportRoute = createRoute({

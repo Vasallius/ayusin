@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { objectIdValidator } from "@/lib/utils";
 
 // TODO: Use proper float32/64 depending on db
 const Location = z.object({
@@ -7,7 +8,7 @@ const Location = z.object({
 });
 
 export const ReportSchema = z.object({
-	id: z.string(),
+	id: objectIdValidator,
 	created_at: z.date(),
 	updated_at: z.date(),
 	title: z.string(),
