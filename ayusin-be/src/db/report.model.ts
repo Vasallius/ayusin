@@ -23,7 +23,14 @@ export const reportSchema = new mongoose.Schema(
 				mediaLinks: { type: [String], required: true },
 				scope: {
 					type: String,
-					enum: ["Barangay", "City", "Province", "Regional", "National"],
+					// Cast as const so TS has hints to narrow Report.metadata.scope as enum instead of widening back to string
+					enum: [
+						"Barangay",
+						"City",
+						"Province",
+						"Regional",
+						"National",
+					] as const,
 					required: true,
 				},
 				category: { type: String, required: true },
