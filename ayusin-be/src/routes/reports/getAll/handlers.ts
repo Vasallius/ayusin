@@ -18,7 +18,11 @@ export const getAllReportsHandler: AppRouteHandler<GetAllReportsRoute> = async (
 		query = query.limit(Number(queryParams.limit));
 	}
 
-	// TODO: find by department
+	if (queryParams.department !== undefined) {
+		query = query.find({
+			"metadata.assignedDepartmentIDs": queryParams.department,
+		});
+	}
 
 	// TODO: find by label
 
