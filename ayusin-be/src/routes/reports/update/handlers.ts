@@ -67,7 +67,7 @@ export const updateReportHandler: AppRouteHandler<UpdateReportRoute> = async (
 		return c.json(
 			{
 				status: "error",
-				description: "Fetching a report failed.",
+				description: "Updating a report failed.",
 			},
 			HttpStatusCodes.INTERNAL_SERVER_ERROR,
 		);
