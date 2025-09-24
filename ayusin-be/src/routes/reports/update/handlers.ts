@@ -1,8 +1,8 @@
 import * as HttpStatusCodes from "stoker/http-status-codes";
 import { Report } from "@/db";
 import type { AppRouteHandler } from "@/lib/types";
-import type { UpdateReportRoute } from "./routes";
 import { isNullOrUndefined } from "@/lib/utils";
+import type { UpdateReportRoute } from "./routes";
 
 export const updateReportHandler: AppRouteHandler<UpdateReportRoute> = async (
 	c,
