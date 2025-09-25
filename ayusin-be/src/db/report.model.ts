@@ -18,6 +18,7 @@ export const reportSchema = new mongoose.Schema(
 			},
 		],
 		upvotes: { type: Number, required: true, default: 0 },
+		downvotes: { type: Number, required: true, default: 0 },
 		metadata: {
 			type: new mongoose.Schema({
 				mediaLinks: { type: [String], required: true },
