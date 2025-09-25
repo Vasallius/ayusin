@@ -40,8 +40,7 @@ export const getReportHandler: AppRouteHandler<GetReportRoute> = async (c) => {
 			HttpStatusCodes.OK,
 		);
 	} catch (error) {
-		// TODO: log caught error more properly
-		console.log(error);
+		c.var.logger.error(error);
 		return c.json(
 			{
 				status: "error",

@@ -45,7 +45,8 @@ export const createReportHandler: AppRouteHandler<CreateReportRoute> = async (
 			},
 			HttpStatusCodes.OK,
 		);
-	} catch {
+	} catch (error) {
+		c.var.logger.error(error);
 		return c.json(
 			{
 				status: "error",
