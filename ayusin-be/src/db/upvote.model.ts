@@ -13,6 +13,11 @@ export const upvoteSchema = new mongoose.Schema(
 			required: true,
 			ref: "Report",
 		},
+		kind: {
+			type: String,
+			enum: ["upvote", "downvote"] as const,
+			required: true,
+		},
 	},
 	{ timestamps: true },
 );
