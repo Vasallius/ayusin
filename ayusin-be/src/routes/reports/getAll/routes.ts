@@ -17,7 +17,6 @@ const ErrorResponseSchema = z.object({
 
 const positiveIntValidator = z
 	.string()
-	.optional()
 	.refine(
 		(s) => {
 			if (s === undefined) return true;
@@ -30,7 +29,16 @@ const positiveIntValidator = z
 		},
 		{ message: "query parameter must be a positive integer greater than 0" },
 	)
-	.transform((s) => (s === undefined ? undefined : Number(s)));
+	.transform((s) => Number(s))
+	.optional();
+
+const numberValidator = z
+	.string()
+	.refine((s) => !Number.isNaN(Number(s)), {
+		message: "query parameter must be a number",
+	})
+	.transform((s) => Number(s))
+	.optional();
 
 const RequestQueryParamsSchema = z
 	.object({
@@ -51,22 +59,66 @@ const RequestQueryParamsSchema = z
 			.describe("Sort by a variable"),
 		order_by: z
 			.enum(["asc", "desc"])
-			.default("asc")
+			.optional()
 			.describe(
 				"What to order the sort in 'sort_by' by: ascending or descending",
 			),
 		location: z
 			.string()
+			.refine(
+				(s) => {
+					const halves = s.split(",");
+					if (halves.length !== 2) {
+						return false;
+					}
+
+					const [x, y] = halves.map(Number);
+					if (Number.isNaN(x) || Number.isNaN(y)) {
+						return false;
+					}
+
+					return true;
+				},
+				{
+					message: "location must follow the format '<number>,<number>'",
+				},
+			)
+			.transform((s) => {
+				const [x, y] = s.split(",").map(Number);
+				return { x: x, y: y };
+			})
 			.optional()
 			.describe("Location coordinate (longitude:x, latitude:y)"),
-		// TODO: add refinement to require location when radius is given.
-		radius: z.number().optional().describe("How many meters from location"),
+		radius: numberValidator.describe("How many meters from location"),
 		limit: positiveIntValidator.describe("How many reports to return"),
 	})
-	.refine((data) => data.sort_by !== undefined || data.order_by === undefined, {
-		message: "'order_by' can only be set if 'sort_by' is provided",
-		path: ["order_by"],
-	});
+	.refine(
+		(data) => !(data.order_by !== undefined && data.sort_by === undefined),
+		{
+			message: "'order_by' can only be set if 'sort_by' is provided",
+			path: ["order_by"],
+		},
+	)
+	.refine(
+		(data) => {
+			const hasLocation = data.location !== undefined;
+			const hasRadius = data.radius !== undefined;
+
+			if (hasRadius && !hasLocation) {
+				return false;
+			}
+
+			if (!hasRadius && hasLocation) {
+				return false;
+			}
+
+			return true;
+		},
+		{
+			message: "'location' and 'radius' must both either be set or unset",
+			path: ["location", "radius"],
+		},
+	);
 
 export const getAllReportsRoute = createRoute({
 	description: "Get all reports",

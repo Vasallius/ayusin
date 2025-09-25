@@ -11,7 +11,9 @@ export const getAllReportsHandler: AppRouteHandler<GetAllReportsRoute> = async (
 	let query = Report.find({});
 
 	if (queryParams.sort_by !== undefined) {
-		query = query.sort({ [queryParams.sort_by]: queryParams.order_by });
+		query = query.sort({
+			[queryParams.sort_by]: queryParams.order_by ?? "asc",
+		});
 	}
 
 	if (queryParams.limit !== undefined) {
@@ -24,11 +26,31 @@ export const getAllReportsHandler: AppRouteHandler<GetAllReportsRoute> = async (
 		});
 	}
 
-	// TODO: find by label
+	if (queryParams.label !== undefined) {
+		query = query.find({
+			labels: queryParams.label,
+		});
+	}
 
-	// TODO: find by categories
+	if (queryParams.categories !== undefined) {
+		query = query.find({
+			"metadata.category": queryParams.categories,
+		});
+	}
 
-	// TODO: find by location/radius
+	if (queryParams.location !== undefined && queryParams.radius !== undefined) {
+		query = query.find({
+			location: {
+				$nearSphere: {
+					$geometry: {
+						type: "Point",
+						coordinates: [queryParams.location.x, queryParams.location.y],
+					},
+					$maxDistance: queryParams.radius,
+				},
+			},
+		});
+	}
 
 	try {
 		const reports = await query.exec();
