@@ -10,6 +10,7 @@ export const reportSchema = new mongoose.Schema(
 		location: {
 			type: pointSchema,
 			required: true,
+			index: "2dsphere",
 		},
 		logs: [
 			{
