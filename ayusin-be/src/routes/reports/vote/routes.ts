@@ -27,7 +27,7 @@ const QueryParamsSchema = z.object({
 
 export const updateReportVotesRoute = createRoute({
 	description: "Get all reports",
-	path: "/:id/vote",
+	path: "/{id}/vote",
 	method: "post",
 	request: {
 		params: ParamsSchema,
