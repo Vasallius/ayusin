@@ -1,11 +1,6 @@
-import { logger } from "@/lib/logger";
 import * as mongoose from "mongoose";
 
-logger.warn(
-	"Upvote collection is now deprecated. Use Vote collection instead!",
-);
-
-export const upvoteSchema = new mongoose.Schema(
+export const voteSchema = new mongoose.Schema(
 	{
 		version: { type: Number, required: true },
 		userID: {
@@ -27,7 +22,7 @@ export const upvoteSchema = new mongoose.Schema(
 	{ timestamps: true },
 );
 
-upvoteSchema.index({ userID: 1, reportID: 1 }, { unique: true });
+voteSchema.index({ userID: 1, reportID: 1 }, { unique: true });
 
-export type Upvote = mongoose.InferSchemaType<typeof upvoteSchema>;
-export const Upvote = mongoose.model("Upvote", upvoteSchema);
+export type Vote = mongoose.InferSchemaType<typeof voteSchema>;
+export const Vote = mongoose.model("Vote", voteSchema);
