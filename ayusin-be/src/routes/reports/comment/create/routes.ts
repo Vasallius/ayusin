@@ -16,6 +16,7 @@ const ErrorResponseSchema = z.object({
 });
 
 const ParamsSchema = z.object({
+	// From route /reports/{id}/comments
 	id: objectIdValidator.describe("Report ID"),
 });
 
@@ -26,7 +27,7 @@ const BodySchema = z.object({
 
 export const createReportCommentRoute = createRoute({
 	description: "Create a comment on a specific report",
-	path: "/:id/comments",
+	path: "/",
 	method: "post",
 	request: {
 		params: ParamsSchema,

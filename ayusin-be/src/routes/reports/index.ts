@@ -4,10 +4,7 @@ import { getReportHandler, getReportRoute } from "./get";
 import { getAllReportsHandler, getAllReportsRoute } from "./getAll";
 import { updateReportHandler, updateReportRoute } from "./update";
 import { updateReportVotesHandler, updateReportVotesRoute } from "./vote";
-import {
-	createReportCommentHandler,
-	createReportCommentRoute,
-} from "./create-comment";
+import commentRouter from "./comment";
 
 const router = createRouter()
 	.basePath("/reports")
@@ -16,6 +13,6 @@ const router = createRouter()
 	.openapi(getReportRoute, getReportHandler)
 	.openapi(updateReportRoute, updateReportHandler)
 	.openapi(updateReportVotesRoute, updateReportVotesHandler)
-	.openapi(createReportCommentRoute, createReportCommentHandler);
+	.route("/:id/", commentRouter);
 
 export default router;
