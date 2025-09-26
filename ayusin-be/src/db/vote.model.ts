@@ -22,7 +22,7 @@ export const voteSchema = new mongoose.Schema(
 	{ timestamps: true },
 );
 
-voteSchema.index({ userID: 1, reportID: 1 }, { unique: true });
+voteSchema.index({ userID: 1, reportID: 1, kind: 1 }, { unique: true });
 
 export type Vote = mongoose.InferSchemaType<typeof voteSchema>;
 export const Vote = mongoose.model("Vote", voteSchema);
