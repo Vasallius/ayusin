@@ -21,8 +21,8 @@ export async function generateMockReports(count = 50) {
 			labels: randomChoices(labelOptions, 1, 4),
 			location: randomCoordinates(),
 			logs: [], // Empty for now, would need ReportLog ObjectIds
-			upvotes: Math.floor(Math.random() * 100),
-			downvotes: Math.floor(Math.random() * 30),
+			upvotes: 0,
+			downvotes: 0,
 			metadata: {
 				mediaLinks: randomChoices(mediaLinks, 0, 3),
 				scope: randomChoice([...scopes]),
@@ -64,8 +64,8 @@ export async function generateMockReportsOneByOne(count = 50) {
 				labels: randomChoices(labelOptions, 1, 4),
 				location: randomCoordinates(),
 				logs: [],
-				upvotes: Math.floor(Math.random() * 100),
-				downvotes: Math.floor(Math.random() * 30),
+				upvotes: 0,
+				downvotes: 0,
 				metadata: {
 					mediaLinks: randomChoices(mediaLinks, 0, 3),
 					scope: randomChoice([...scopes]),
