@@ -1,29 +1,61 @@
 import * as HttpStatusCodes from "stoker/http-status-codes";
-import { Report } from "@/db";
+import { Report, Vote } from "@/db";
 import type { AppRouteHandler } from "@/lib/types";
 import type { UpdateReportVotesRoute } from "./routes";
+import mongoose from "mongoose";
+import { isNullOrUndefined } from "@/lib/utils";
 
 export const updateReportVotesHandler: AppRouteHandler<
 	UpdateReportVotesRoute
 > = async (c) => {
-	const { id } = c.req.valid("param");
+	const { id: reportID } = c.req.valid("param");
+
+	// TODO: Get User ID from JWT;
+	const userID = "68d52bd0c49da3f4be2c0734";
+
+	const { logger } = c.var;
 
 	const { type, action } = c.req.valid("query");
 
-	try {
-		let delta = 0;
+	let upvotes: number | undefined, downvotes: number | undefined;
+
+	await mongoose.connection.transaction(async function (session) {
+		const report = await Report.findById(reportID).session(session).exec();
+
+		if (report === null) {
+			c.status(HttpStatusCodes.NOT_FOUND);
+			throw new Error("Report not found given reportID");
+		}
+
+		let delta = 1;
 		const increment: { upvotes?: number; downvotes?: number } = {};
 
 		switch (action) {
-			case "add":
+			case "add": {
+				const vote = new Vote({
+					version: 1,
+					userID,
+					reportID: report._id,
+					kind: type,
+				});
 				delta = 1;
+				await vote.save({ session });
 				break;
-			case "sub":
+			}
+			case "sub": {
+				const vote = await Vote.findOneAndDelete(
+					{ userID, reportID },
+					{ session },
+				);
+				if (vote === null) {
+					c.status(HttpStatusCodes.NOT_FOUND);
+					throw new Error("Vote not found given userID and reportID");
+				}
 				delta = -1;
 				break;
-
-			// On unsupported action, hit try catch to respond with 500
+			}
 			default:
+				c.status(HttpStatusCodes.UNPROCESSABLE_ENTITY);
 				throw new Error("Unsupported action");
 		}
 
@@ -34,45 +66,33 @@ export const updateReportVotesHandler: AppRouteHandler<
 			case "downvote":
 				increment.downvotes = delta;
 				break;
-
 			default:
-				// On unsupported action, hit try catch to respond with 500
-				throw new Error("Unsupported type");
+				c.status(HttpStatusCodes.UNPROCESSABLE_ENTITY);
+				throw new Error("Unsupported vote type");
 		}
 
-		// TODO: Should we do checking s.t. upvotes and downvotes cannot decrement below zero?
-		const report = await Report.findOneAndUpdate(
-			{ _id: id },
+		// Unfortunately, updateOne does not return the updated document.
+		const updated = await Report.findOneAndUpdate(
+			{ _id: report._id },
 			{ $inc: increment },
-			{ new: true },
-		).exec();
-
-		if (report === null) {
-			return c.json(
-				{
-					status: "error",
-					description: "Report not found",
-				},
-				HttpStatusCodes.NOT_FOUND,
-			);
-		}
-
-		return c.json(
-			{
-				status: "success",
-				upvotes: report.upvotes,
-				downvotes: report.downvotes,
-			},
-			HttpStatusCodes.OK,
+			{ new: true, session },
 		);
-	} catch (error) {
-		c.var.logger.error(error);
-		return c.json(
-			{
-				status: "error",
-				description: "Fetching a report failed.",
-			},
-			HttpStatusCodes.INTERNAL_SERVER_ERROR,
+
+		upvotes = updated?.upvotes;
+		downvotes = updated?.downvotes;
+	});
+
+	if (isNullOrUndefined(upvotes) || isNullOrUndefined(downvotes))
+		throw new Error(
+			"This should have been set within the transaction. Otherwise, transaction should have warranted an error",
 		);
-	}
+
+	return c.json(
+		{
+			status: "success",
+			upvotes: upvotes,
+			downvotes: downvotes,
+		},
+		HttpStatusCodes.OK,
+	);
 };
