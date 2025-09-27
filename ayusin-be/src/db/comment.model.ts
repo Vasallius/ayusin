@@ -15,6 +15,10 @@ export const commentSchema = new mongoose.Schema(
 			required: true,
 			ref: "Report",
 		},
+		isInternal: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{ timestamps: true },
 );
