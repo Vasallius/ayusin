@@ -1,0 +1,61 @@
+import type { HydratedDocument } from "mongoose";
+import { z } from "zod";
+import type { Role } from "@/db";
+
+export const ParamsIDSchema = z.object({
+	id: z
+		.string()
+		.min(3)
+		.openapi({
+			param: {
+				name: "id",
+				in: "path",
+			},
+			example: "3298",
+		}),
+});
+
+export const RoleSchema = z.object({
+	id: z.string(),
+	created_at: z.string(),
+	updated_at: z.string(),
+	name: z.string(),
+	description: z.string().optional(),
+	importance: z.number(),
+	parent_role: z.string().optional(),
+	clearance_level: z.string(),
+	access_scope: z.array(z.string()),
+});
+
+export const updateRoleByIDRequest = RoleSchema.pick({
+	description: true,
+	parent_role: true,
+}).extend({
+	name: z.string().optional(),
+	importance: z.number().optional(),
+	clearance_level: z.string().optional(),
+	access_scope: z.array(z.string()).optional(),
+});
+
+export const updateRoleByIDResponse = z.object({
+	status: z.literal("success"),
+	...RoleSchema.shape,
+});
+
+export const updateRoleByIDErrorResponse = z.object({
+	status: z.literal("error"),
+	description: z.string(),
+});
+
+export const roleDocToZod = (role: HydratedDocument<Role>) =>
+	RoleSchema.parse({
+		id: role._id.toString(),
+		created_at: role.createdAt.toISOString(),
+		updated_at: role.updatedAt.toISOString(),
+		name: role.name,
+		importance: role.importance,
+		description: role.description ?? undefined,
+		parent_role: role.parentRole ?? undefined,
+		clearance_level: role.clearanceLevel,
+		access_scope: role.accessScope,
+	});
