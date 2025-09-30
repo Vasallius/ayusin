@@ -5,7 +5,7 @@ export const roleSchema = new mongoose.Schema(
 		version: { type: Number, required: true },
 		name: { type: String, required: true },
 		description: { type: String, required: false },
-    importance: { type: Number, required: true },
+		importance: { type: Number, required: true },
 		parentRole: {
 			type: mongoose.Schema.Types.ObjectId,
 			required: false,
