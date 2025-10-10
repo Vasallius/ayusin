@@ -35,29 +35,32 @@ export const createMember: AppRouteHandler<CreateRoute> = async (c) => {
 			phone: body.phone ?? undefined,
 			avatar: body.avatar ?? undefined,
 		});
-			await user.save();
+		await user.save();
 
-			department.members.push(user._id);
-			await department.save();
+		department.members.push(user._id);
+		await department.save();
 
-			return c.json(
-				{
-					status: "success",
-        ...{
-          role_id: body.role_id,
-          user_id: body.user_id,
-          department_id: body.department_id,
-          name: body.name,
-          email: body.email ?? undefined,
-          phone: body.phone ?? undefined,
-          avatar: body.avatar ?? undefined,
-          relationships: user.relationships?.map((r) => r.toString()) ?? [],
-        },
-        created_at: user.createdAt,
-        updated_at: user.updatedAt,
+		return c.json(
+			{
+				status: "success",
+				...{
+					role_id: body.role_id,
+					user_id: body.user_id,
+					department_id: body.department_id,
+					name: body.name,
+					email: body.email ?? undefined,
+					phone: body.phone ?? undefined,
+					avatar: body.avatar ?? undefined,
+					relationships:
+						(user.get("relationships") as any[] | undefined)?.map((r: any) =>
+							r.toString(),
+						) ?? [],
 				},
-				HttpStatusCodes.OK,
-			);
+				created_at: user.createdAt,
+				updated_at: user.updatedAt,
+			},
+			HttpStatusCodes.OK,
+		);
 	} catch (error) {
 		c.var.logger.error(error);
 		return c.json(

@@ -11,11 +11,11 @@ export const createMemberRequest = z.object({
 });
 
 export const createMemberOkResponse = z.object({
-    status: z.literal("success"),
-    ...createMemberRequest.shape,
-    relationships: z.array(z.string()),
-    created_at: z.date(),
-    updated_at: z.date(),
+	status: z.literal("success"),
+	...createMemberRequest.shape,
+	relationships: z.array(z.string()),
+	created_at: z.date(),
+	updated_at: z.date(),
 });
 
 export const createMemberErrorResponse = z.object({
