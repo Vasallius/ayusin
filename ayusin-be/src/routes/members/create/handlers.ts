@@ -43,17 +43,18 @@ export const createMember: AppRouteHandler<CreateRoute> = async (c) => {
 			return c.json(
 				{
 					status: "success",
-					...{
-						role_id: body.role_id,
-						user_id: body.user_id,
-						department_id: body.department_id,
-						name: body.name,
-						email: body.email ?? undefined,
-						phone: body.phone ?? undefined,
-						avatar: body.avatar ?? undefined,
-					},
-					created_at: user.createdAt,
-					updated_at: user.updatedAt,
+        ...{
+          role_id: body.role_id,
+          user_id: body.user_id,
+          department_id: body.department_id,
+          name: body.name,
+          email: body.email ?? undefined,
+          phone: body.phone ?? undefined,
+          avatar: body.avatar ?? undefined,
+          relationships: user.relationships?.map((r) => r.toString()) ?? [],
+        },
+        created_at: user.createdAt,
+        updated_at: user.updatedAt,
 				},
 				HttpStatusCodes.OK,
 			);
