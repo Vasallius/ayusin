@@ -6,21 +6,28 @@ export const userSchema = new mongoose.Schema(
 		role: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Role",
+			required: false,
 		},
 		department: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Department",
+			required: false,
 		},
-		name: { type: String, required: true },
+		name: { type: String, required: false },
 		email: { type: String, required: false },
 		phone: { type: String, required: false },
 		avatar: { type: String, required: false },
+		relationships: {
+			type: [mongoose.Schema.Types.ObjectId],
+			ref: "User",
+			required: false,
+		},
 		userID: { type: String, required: true }, // for clerk this is the clerk ID, otherwise it's the user ID from webauthn
 
 		// specific to citizens only
-		credentialID: { type: String, required: true },
-		publicKey: { type: String, required: true },
-		counter: { type: Number, required: true },
+		credentialID: { type: String, required: false },
+		publicKey: { type: String, required: false },
+		counter: { type: Number, required: false },
 	},
 	{ timestamps: true },
 );
