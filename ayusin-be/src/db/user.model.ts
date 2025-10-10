@@ -3,6 +3,8 @@ import * as mongoose from "mongoose";
 export const userSchema = new mongoose.Schema(
 	{
 		version: { type: Number, required: true },
+		// distinguishes local-government members vs. citizen users
+		type: { type: String, enum: ["lgu_member", "citizen"], required: true },
 		role: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Role",
