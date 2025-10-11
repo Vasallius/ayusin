@@ -15,6 +15,7 @@ export const ParamsDepartmentIDSchema = z.object({
 });
 
 const MemberSchema = createMemberRequest.extend({
+	id: z.string(),
 	relationships: z.array(z.string()),
 	created_at: z.date(),
 	updated_at: z.date(),

@@ -19,8 +19,14 @@ export const getMemberByUserID: AppRouteHandler<GetByUserIDRoute> = async (
 				HttpStatusCodes.NOT_FOUND,
 			);
 		}
+		const base = memberDocToZod(doc);
+		// map relationships ObjectIds to Clerk user ID strings
+		const relatedDocs = await User.find({
+			_id: { $in: doc.relationships },
+		}).exec();
+		const relationships = relatedDocs.map((u) => u.userID);
 		return c.json(
-			{ status: "success", ...memberDocToZod(doc) },
+			{ id: doc._id.toString(), status: "success", ...base, relationships },
 			HttpStatusCodes.OK,
 		);
 	} catch (error) {

@@ -26,6 +26,7 @@ const MemberSchema = createMemberRequest.extend({
 
 // Success and error responses
 export const getMemberByUserIDResponse = z.object({
+	id: z.string(),
 	status: z.literal("success"),
 	...MemberSchema.shape,
 });
@@ -34,6 +35,7 @@ export const getMemberByUserIDErrorResponse = createMemberErrorResponse;
 // Convert Mongoose User document into Zod-validated data
 export const memberDocToZod = (doc: HydratedDocument<User>) =>
 	MemberSchema.parse({
+		id: doc._id.toString(),
 		role_id: doc.role!.toString(),
 		user_id: doc.userID,
 		department_id: doc.department!.toString(),
@@ -43,8 +45,5 @@ export const memberDocToZod = (doc: HydratedDocument<User>) =>
 		email: doc.email ?? undefined,
 		phone: doc.phone ?? undefined,
 		avatar: doc.avatar ?? undefined,
-		relationships:
-			(doc.get("relationships") as any[] | undefined)?.map((r: any) =>
-				r.toString(),
-			) ?? [],
+		relationships: doc.relationships?.map((r) => r.toString()) ?? [],
 	});

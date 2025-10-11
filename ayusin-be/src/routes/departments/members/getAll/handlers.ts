@@ -13,7 +13,27 @@ export const getAllMembersHandler: AppRouteHandler<GetAllMembersRoute> = async (
 			department: department_id,
 			type: "lgu_member",
 		}).exec();
-		const members = docs.map(memberDocToZod);
+		// batch-fetch related profiles for mapping relationships
+		const relIds = docs.flatMap((d) => d.relationships || []);
+		const relatedDocs = await User.find(
+			{ _id: { $in: relIds } },
+			{ userID: 1 },
+		).exec();
+		const userIdMap = new Map(
+			relatedDocs.map((u) => [u._id.toString(), u.userID]),
+		);
+		const members = docs.map((doc) => {
+			const base = memberDocToZod(doc);
+			const relationships = (doc.relationships || []).map(
+				(oid) => userIdMap.get(oid.toString()) ?? "",
+			);
+			return {
+				id: doc._id.toString(),
+				status: "success",
+				...base,
+				relationships,
+			};
+		});
 		return c.json({ status: "success", members }, HttpStatusCodes.OK);
 	} catch (error) {
 		c.var.logger.error(error);

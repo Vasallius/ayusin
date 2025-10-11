@@ -11,6 +11,7 @@ export const createMemberRequest = z.object({
 });
 
 export const createMemberOkResponse = z.object({
+	id: z.string(),
 	status: z.literal("success"),
 	...createMemberRequest.shape,
 	relationships: z.array(z.string()),

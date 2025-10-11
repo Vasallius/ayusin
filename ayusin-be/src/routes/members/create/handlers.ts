@@ -34,6 +34,7 @@ export const createMember: AppRouteHandler<CreateRoute> = async (c) => {
 			email: body.email ?? undefined,
 			phone: body.phone ?? undefined,
 			avatar: body.avatar ?? undefined,
+			relationships: [],
 		});
 		await user.save();
 
@@ -42,6 +43,7 @@ export const createMember: AppRouteHandler<CreateRoute> = async (c) => {
 
 		return c.json(
 			{
+				id: user._id.toString(),
 				status: "success",
 				...{
 					role_id: body.role_id,
@@ -51,10 +53,7 @@ export const createMember: AppRouteHandler<CreateRoute> = async (c) => {
 					email: body.email ?? undefined,
 					phone: body.phone ?? undefined,
 					avatar: body.avatar ?? undefined,
-					relationships:
-						(user.get("relationships") as any[] | undefined)?.map((r: any) =>
-							r.toString(),
-						) ?? [],
+					relationships: [],
 				},
 				created_at: user.createdAt,
 				updated_at: user.updatedAt,

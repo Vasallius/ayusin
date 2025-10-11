@@ -23,6 +23,7 @@ export const userSchema = new mongoose.Schema(
 			type: [mongoose.Schema.Types.ObjectId],
 			ref: "User",
 			required: false,
+			default: [],
 		},
 		userID: { type: String, required: true }, // for clerk this is the clerk ID, otherwise it's the user ID from webauthn
 

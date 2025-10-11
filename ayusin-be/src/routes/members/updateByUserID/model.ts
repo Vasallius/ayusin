@@ -25,6 +25,7 @@ export const updateMemberByUserIDRequest = createMemberRequest
 	})
 	.partial();
 
+// Core member schema with relationships as IDs and timestamps
 const MemberSchema = createMemberRequest.extend({
 	relationships: z.array(z.string()),
 	created_at: z.date(),
@@ -32,6 +33,7 @@ const MemberSchema = createMemberRequest.extend({
 });
 
 export const updateMemberByUserIDResponse = z.object({
+	id: z.string(),
 	status: z.literal("success"),
 	...MemberSchema.shape,
 });
